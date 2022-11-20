@@ -16,7 +16,7 @@ class Board(
         var content: String,
         var createdAt: Date,
         var updatedAt: Date,
-        @ManyToOne
+        @ManyToOne(fetch = FetchType.LAZY)
         @OnDelete(action = OnDeleteAction.CASCADE)
         @JoinColumn(name = "userId")
         val user: User,

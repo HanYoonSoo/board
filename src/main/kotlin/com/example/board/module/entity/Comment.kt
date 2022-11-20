@@ -10,12 +10,12 @@ import javax.persistence.*
 @Table(name = "comment")
 class Comment(
 
-        @ManyToOne
+        @ManyToOne(fetch = FetchType.LAZY)
         @OnDelete(action = OnDeleteAction.CASCADE)
         @JoinColumn(name = "userId")
         val user: User,
 
-        @ManyToOne
+        @ManyToOne(fetch = FetchType.LAZY)
         @OnDelete(action = OnDeleteAction.CASCADE)
         @JoinColumn(name = "boardId")
         val board: Board,

@@ -1,9 +1,6 @@
 package com.example.board.module.controller
 
-import com.example.board.module.dto.BoardDto
-import com.example.board.module.dto.BoardModifyDto
-import com.example.board.module.dto.CommentDto
-import com.example.board.module.dto.CommentModifyDto
+import com.example.board.module.dto.*
 import com.example.board.module.entity.Board
 import com.example.board.module.entity.Comment
 import com.example.board.module.service.BoardService
@@ -12,6 +9,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/board")
 class BoardController(private val boardService: BoardService) {
+
     @PostMapping("/create")
     fun createBoard(@RequestBody request: BoardDto): Board {
         request.apply{
@@ -20,7 +18,7 @@ class BoardController(private val boardService: BoardService) {
     }
 
     @GetMapping("{boardId}")
-    fun getBoardById(@PathVariable boardId: String): Board{
+    fun getBoardById(@PathVariable boardId: String): TestDto {
         return boardService.getBoardById(boardId)
     }
 
@@ -36,7 +34,7 @@ class BoardController(private val boardService: BoardService) {
 
     //댓글
     @PostMapping("{boardId}/comment")
-    fun postComment(@PathVariable boardId: String, @RequestBody request: CommentDto): Comment {
+    fun postComment(@PathVariable boardId: String, @RequestBody request: CommentDto): Boolean {
         return boardService.postComment(boardId, request)
     }
 

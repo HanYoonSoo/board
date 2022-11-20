@@ -1,9 +1,6 @@
 package com.example.board.module.service
 
-import com.example.board.module.dto.BoardDto
-import com.example.board.module.dto.BoardModifyDto
-import com.example.board.module.dto.CommentDto
-import com.example.board.module.dto.CommentModifyDto
+import com.example.board.module.dto.*
 import com.example.board.module.entity.Board
 import com.example.board.module.entity.Comment
 import com.example.board.module.repository.BoardRepository
@@ -11,6 +8,7 @@ import com.example.board.module.repository.CommentRepository
 import com.example.board.module.repository.UserRepository
 import org.springframework.stereotype.Service
 import java.util.*
+import javax.transaction.Transactional
 
 @Service
 class BoardService(private val boardRepository: BoardRepository, private val userRepository: UserRepository, private val commentRepository: CommentRepository) {
@@ -22,8 +20,12 @@ class BoardService(private val boardRepository: BoardRepository, private val use
         }
     }
 
-    fun getBoardById(boardId: String): Board{
-        return boardRepository.getById(boardId.toLong())
+    @Transactional
+    fun getBoardById(boardId: String): TestDto{
+        val board = boardRepository.getById(boardId.toLong())
+        return TestDto(board.title, board.content, board.replyList.map{
+            TCommentDto.toDto(it)
+        })
     }
 
     fun deleteById(boardId: String){
@@ -42,12 +44,13 @@ class BoardService(private val boardRepository: BoardRepository, private val use
         return boardRepository.save(getBoard)
     }
 
-    fun postComment(boardId: String, comment: CommentDto): Comment {
+    fun postComment(boardId: String, comment: CommentDto): Boolean {
         val user = userRepository.getById(comment.userId)
         val board = boardRepository.getById(boardId.toLong())
         comment.apply {
-            return commentRepository.save(Comment(user, board, content))
+            commentRepository.save(Comment(user, board, content))
         }
+        return true
     }
 
     fun modifyComment(commentId: Long, contentInput: CommentModifyDto): Comment {
