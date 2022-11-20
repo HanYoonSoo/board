@@ -39,7 +39,7 @@ class BoardController(private val boardService: BoardService) {
     fun postComment(@PathVariable boardId: String, @RequestBody request: CommentDto): Comment {
         return boardService.postComment(boardId, request)
     }
-g
+
     @PatchMapping("comment/{commentId}")
     fun modifyComment(@PathVariable commentId: Long, @RequestBody request: CommentModifyDto): Comment {
         return boardService.modifyComment(commentId, request)
