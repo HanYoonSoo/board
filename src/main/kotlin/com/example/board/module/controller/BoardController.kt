@@ -43,6 +43,7 @@ g
     @PatchMapping("comment/{commentId}")
     fun modifyComment(@PathVariable commentId: Long, @RequestBody request: CommentModifyDto): Comment {
         return boardService.modifyComment(commentId, request)
+
     }
 
     @DeleteMapping("comment/{commentId}")
